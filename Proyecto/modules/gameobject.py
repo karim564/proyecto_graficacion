@@ -54,8 +54,8 @@ class GameObject:
                 self.__velocity['y'] = -self.__MAX_VELOCITY
             self.__last_position['y'] = self.__position['y']
             self.__position['y'] += self.__velocity['y']*deltaT
-            if self.__position['y'] <= 50:
-                self.__position['y'] = 50
+            if self.__position['y'] <= 58:
+                self.__position['y'] = 58
                 self.__jumping = False
                 self.__velocity['y'] = 0
 

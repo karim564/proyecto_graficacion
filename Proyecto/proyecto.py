@@ -5,7 +5,7 @@ from modules.textures import loadTexture
 from modules.gameobject import GameObject
 from modules.bezier import *
 from modules.draw import *
-from playsound import playsound
+from modules.play import *
 from threading import Thread
 from modules.transforms import *
 import numpy as np
@@ -25,14 +25,12 @@ GROUND = 50
 SPIDERMAN_IDLE = 0
 SPIDERMAN_RUN = 1
 SPIDERMAN_JUMP = 2
-SPIDERMAN_DOWN = 3
 texture_spiderman = []
 
 #TEXTURA DE VENOM
 VENOM_IDLE = 0
 VENOM_RUN = 1
 VENOM_JUMP = 2
-VENOM_DOWN = 3
 texture_venom = []
 
 #TEXTURA GREEN GLOBIN
@@ -42,31 +40,17 @@ texture_green_globin = []
 flag_left_spiderman = False
 flag_right_spiderman = False
 flag_up_spiderman = False
-flag_down_spiderman = False
 
 #Movimiento Venom
 flag_left_venom = False
 flag_right_venom = False
 flag_up_venom = False
-flag_down_venom = False
 
 #Elementos de Spiderman
 spiderman_gameobject = GameObject()
 
 green_gameobject = GameObject()
 venom_gameobject = GameObject()
-
-def play_song():
-    playsound('Resources/Sounds/spiderman_song.wav')
-
-def play_venom():
-    playsound('Resources/Sounds/venom_sound.wav')
-
-def play_green():
-    playsound('Resources/Sounds/green_sound.wav')
-
-def play_jump():
-    playsound('Resources/Sounds/jump.wav')
 
 def draw_poste():
     glColor3f(0,0.08,0.3)
@@ -265,8 +249,6 @@ def keyPressed ( key, x, y):
     if key == b'k':
         flag_right_venom = True
         
-
-
 def keyUp(key, x, y):
     global flag_left_spiderman, flag_right_spiderman, flag_up_spiderman, flag_down_spiderman
     global flag_left_venom, flag_right_venom, flag_up_venom, flag_down_venom
@@ -329,7 +311,7 @@ def animate():
 
 #TIMERS
 def timer_move_spiderman(value):
-    global spiderman_gameobject, flag_left_spiderman, flag_right_spiderman, flag_down_spiderman, flag_up_spiderman
+    global spiderman_gameobject, flag_left_spiderman, flag_right_spiderman, flag_up_spiderman
     global SPIDERMAN_IDLE, SPIDERMAN_RUN, SPIDERMAN_DOWN, SPIDERMAN_JUMP
     state = spiderman_gameobject.get_state()
     input = {'x': 0, 'y': 0}
@@ -344,6 +326,8 @@ def timer_move_spiderman(value):
         if state != SPIDERMAN_JUMP:
             spiderman_gameobject.change_state(SPIDERMAN_JUMP)
             thread_jump = Thread(target=play_jump)
+            thread_joke = Thread(target=play_joke)
+            thread_joke.start()
             thread_jump.start()
     elif flag_right_spiderman:
         if state != SPIDERMAN_RUN:
@@ -373,7 +357,7 @@ def timer_animate_spiderman(value):
 
 
 def timer_move_venom(value):
-    global venom_gameobject, flag_left_venom, flag_right_venom, flag_down_venom, flag_up_venom
+    global venom_gameobject, flag_left_venom, flag_right_venom, flag_up_venom
     global VENOM_IDLE, VENOM_RUN, VENOM_DOWN, VENOM_JUMP
     state = venom_gameobject.get_state()
     input = {'x': 0, 'y': 0}
@@ -387,6 +371,8 @@ def timer_move_venom(value):
     if flag_up_venom:
         if state != VENOM_JUMP:
             venom_gameobject.change_state(VENOM_JUMP)
+            thread_jump = Thread(target=play_jump)
+            thread_jump.start()
     elif flag_right_venom:
         if state != VENOM_RUN:
             venom_gameobject.change_state(VENOM_RUN)
@@ -440,21 +426,20 @@ def main():
     glutKeyboardUpFunc(keyUp)
     init()
 
-    texture_background = loadTexture('Resources/fondo.png')
-    texture_platform = loadTexture('Resources/plataforma.png')
+    texture_background = loadTexture('Resources/Background/fondo.png')
+    texture_platform = loadTexture('Resources/Background/plataforma.png')
 
-    texture_green_globin.append([loadTexture('Resources/green_globin.png')])
+    texture_green_globin.append([loadTexture('Resources/GreenGlobin/green_globin.png')])
     green_gameobject = GameObject(0,400,(int)(174/3),(int)(122/3), texture_green_globin)
 
-    texture_spiderman.append([loadTexture('Resources/spidermanidle.png')])
-    texture_spiderman.append([loadTexture('Resources/spidermanrun1.png'),loadTexture('Resources/spidermanrun2.png'),loadTexture('Resources/spidermanrun3.png'),loadTexture('Resources/spidermanrun4.png'),loadTexture('Resources/spidermanrun5.png'),loadTexture('Resources/spidermanrun6.png'),loadTexture('Resources/spidermanrun7.png'),loadTexture('Resources/spidermanrun8.png')])
-    texture_spiderman.append([loadTexture('Resources/spidermanjump.png')])
-    texture_spiderman.append([loadTexture('Resources/spiderman_down.png')])
+    texture_spiderman.append([loadTexture('Resources/Spiderman/spidermanidle.png')])
+    texture_spiderman.append([loadTexture('Resources/Spiderman/spidermanrun1.png'),loadTexture('Resources/Spiderman/spidermanrun2.png'),loadTexture('Resources/Spiderman/spidermanrun3.png'),loadTexture('Resources/Spiderman/spidermanrun4.png'),loadTexture('Resources/Spiderman/spidermanrun5.png'),loadTexture('Resources/Spiderman/spidermanrun6.png'),loadTexture('Resources/Spiderman/spidermanrun7.png'),loadTexture('Resources/Spiderman/spidermanrun8.png')])
+    texture_spiderman.append([loadTexture('Resources/Spiderman/spidermanjump.png')])
     spiderman_gameobject = GameObject(0,GROUND,(int)(226/4),(int)(282/4), texture_spiderman)
 
-    texture_venom.append([loadTexture('Resources/venom_idle.png')])
-    texture_venom.append([loadTexture('Resources/venom_run1.png'),loadTexture('Resources/venom_run2.png'),loadTexture('Resources/venom_run3.png'),loadTexture('Resources/venom_run4.png'),loadTexture('Resources/venom_run5.png'),loadTexture('Resources/venom_run6.png'),loadTexture('Resources/venom_run7.png'),loadTexture('Resources/venom_run8.png'),loadTexture('Resources/venom_run9.png'),loadTexture('Resources/venom_run10.png')])
-    #texture_venom.append([loadTexture('Resources/venomjump.png')])
+    texture_venom.append([loadTexture('Resources/Venom/venom_idle.png')])
+    texture_venom.append([loadTexture('Resources/Venom/venom_run1.png'),loadTexture('Resources/Venom/venom_run2.png'),loadTexture('Resources/Venom/venom_run3.png'),loadTexture('Resources/Venom/venom_run4.png'),loadTexture('Resources/Venom/venom_run5.png'),loadTexture('Resources/Venom/venom_run6.png'),loadTexture('Resources/Venom/venom_run7.png'),loadTexture('Resources/Venom/venom_run8.png'),loadTexture('Resources/Venom/venom_run9.png'),loadTexture('Resources/Venom/venom_run10.png')])
+    texture_venom.append([loadTexture('Resources/Venom/venom_jump.png')])
     venom_gameobject = GameObject(350,GROUND+8,(int)(300/5),(int)(339/5), texture_venom)
 
     timer_move_spiderman(0)
