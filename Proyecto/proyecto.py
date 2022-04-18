@@ -12,7 +12,10 @@ import numpy as np
 import random
 import math
 
+#NÚMEROS
 w,h= 1000,500
+aux1,aux2=0,0
+aux3=5
 
 #TEXTURA DE FONDO
 texture_background = []
@@ -53,6 +56,7 @@ green_gameobject = GameObject()
 venom_gameobject = GameObject()
 
 def draw_poste():
+    global aux2,aux3
     glColor3f(0,0.08,0.3)
     glBegin(GL_POLYGON)
     glVertex2d(480,200)
@@ -61,7 +65,11 @@ def draw_poste():
     glVertex2d(490,200)
     glEnd()
     glLineWidth(3)
-    a=spiral(485,300,np.random.randint(5,100),np.random.randint(2,16))
+    if aux2>16:aux2=2
+    else:aux2+=1
+    if aux3>50:aux3=5
+    else:aux3+=1
+    a=spiral(485,300,aux3,aux2)
     #points = np.array([[200,200],[300,300],[400,200],[100,400]])
     points = np.array(a)
     paths=evaluate_bezier(points,1)
@@ -89,6 +97,7 @@ def draw_sol():
     glEnd()
 
 def draw_estrellas():
+    global aux1
     xc1=112
     yc1=320
     xc2=500
@@ -103,12 +112,13 @@ def draw_estrellas():
     translate(cord_estrella[0],-xc1,-yc1),
     translate(cord_estrella[1],-xc2,-yc2),
     translate(cord_estrella[2],-xc3,-yc3)]
-    randomsillo=np.random.random()
-    
+    #randomsillo=np.random.random()
+    if aux1>0.99:aux1=0
+    else:aux1+=0.01
     newestrella=[
-        resize(cord_estrella[0],randomsillo*5,randomsillo*5),
-        rotate(cord_estrella[1],randomsillo*2*math.pi),
-        translate(cord_estrella[2],randomsillo*-400,0)
+        resize(cord_estrella[0],aux1*4,aux1*4),
+        rotate(cord_estrella[1],aux1*2*math.pi),
+        translate(cord_estrella[2],aux1*-200,0)
         ]
     #newestrella=rotate(newestrella,3.1416)
 
