@@ -137,6 +137,7 @@ def draw_estrellas():
         #glVertex2d(newestrella[1][i][0], newestrella[1][i][1])
         glEnd() 
 
+#DIBUJO DE LA TEXTURA DEL FONDO
 def draw_background():
     global texture_background, texture_platform
     glBindTexture(GL_TEXTURE_2D, texture_background)
@@ -183,7 +184,7 @@ def draw_green_globin():
     glEnd()
 
 
-#Dibujar Spiderman
+#Dibujar Spiderman textura
 def draw_spiderman():
     global spiderman_gameobject
     x,y = spiderman_gameobject.get_position()
@@ -201,7 +202,7 @@ def draw_spiderman():
     glVertex2d(x,y+h)
     glEnd()
 
-#Dibujar Venom
+#Dibujar Venom textura
 def draw_venom():
     global venom_gameobject
     x,y = venom_gameobject.get_position()
@@ -220,7 +221,7 @@ def draw_venom():
     glVertex2d(x,y+h)
     glEnd()
 
-
+#COLISIONES
 def check_collisions():
     global spiderman_gameobject, venom_gameobject
     if spiderman_gameobject.is_collision(venom_gameobject):
@@ -229,17 +230,15 @@ def check_collisions():
         thread_sound_venom.start()
 
 
-
+#FUNCIONES DE TECLADO
 def keyPressed ( key, x, y):
-    global flag_left_spiderman, flag_right_spiderman, flag_up_spiderman, flag_down_spiderman
-    global flag_left_venom, flag_right_venom, flag_up_venom, flag_down_venom
+    global flag_left_spiderman, flag_right_spiderman, flag_up_spiderman
+    global flag_left_venom, flag_right_venom, flag_up_venom
+    #---------SPIDERMAN KEYS-----
     if key == b'\x1b':
         glutLeaveMainLoop()
     if key == b'w':
         flag_up_spiderman = True
-        
-    if key == b's':
-        flag_down_spiderman = True
         
     if key == b'a':
         flag_left_spiderman = True
@@ -247,37 +246,42 @@ def keyPressed ( key, x, y):
     if key == b'd':
         flag_right_spiderman = True
 
+    #----------END--------------
+
+    #---------VENOM KEYS-----
     if key == b'u':
         flag_up_venom = True
-    
-    if key == b'j':
-        flag_down_venom = True
-    
+
     if key == b'h':
         flag_left_venom = True
     
     if key == b'k':
         flag_right_venom = True
+    #----------END--------------
         
 def keyUp(key, x, y):
-    global flag_left_spiderman, flag_right_spiderman, flag_up_spiderman, flag_down_spiderman
-    global flag_left_venom, flag_right_venom, flag_up_venom, flag_down_venom
+    global flag_left_spiderman, flag_right_spiderman, flag_up_spiderman
+    global flag_left_venom, flag_right_venom, flag_up_venom
+
+    #---------SPIDERMAN KEYS-----
     if key == b'w':
         flag_up_spiderman = False
-    if key == b's':
-        flag_down_spiderman = False
     if key == b'a':
         flag_left_spiderman = False
     if key == b'd':
         flag_right_spiderman = False
+
+    #----------END--------------
+
+    #---------VENOM KEYS-----
     if key == b'u':
         flag_up_venom = False
-    if key == b'j':
-        flag_down_venom = False
     if key == b'h':
         flag_left_venom = False
     if key == b'k':
         flag_right_venom = False
+    
+    #----------END--------------
         
 
 def init():
@@ -322,7 +326,7 @@ def animate():
 #TIMERS
 def timer_move_spiderman(value):
     global spiderman_gameobject, flag_left_spiderman, flag_right_spiderman, flag_up_spiderman
-    global SPIDERMAN_IDLE, SPIDERMAN_RUN, SPIDERMAN_DOWN, SPIDERMAN_JUMP
+    global SPIDERMAN_IDLE, SPIDERMAN_RUN, SPIDERMAN_JUMP
     state = spiderman_gameobject.get_state()
     input = {'x': 0, 'y': 0}
     input['y'] = 1 if flag_up_spiderman else 0
@@ -330,7 +334,6 @@ def timer_move_spiderman(value):
         input['x'] = 1
     elif flag_left_spiderman:
         input['x'] = -1
-
 
     if flag_up_spiderman:
         if state != SPIDERMAN_JUMP:
@@ -368,7 +371,7 @@ def timer_animate_spiderman(value):
 
 def timer_move_venom(value):
     global venom_gameobject, flag_left_venom, flag_right_venom, flag_up_venom
-    global VENOM_IDLE, VENOM_RUN, VENOM_DOWN, VENOM_JUMP
+    global VENOM_IDLE, VENOM_RUN, VENOM_JUMP
     state = venom_gameobject.get_state()
     input = {'x': 0, 'y': 0}
     input['y'] = 1 if flag_up_venom else 0
