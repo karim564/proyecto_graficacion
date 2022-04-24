@@ -22,6 +22,7 @@ class GameObject:
         self.__size['y'] = h
         self.animator = frames
 
+
     def automatic_move(self, scr_w):
         if self.__velocity['x'] == 0:
             self.__velocity['x'] = 3

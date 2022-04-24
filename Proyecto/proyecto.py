@@ -439,11 +439,14 @@ def main():
     glutKeyboardUpFunc(keyUp)
     init()
 
+    #CARGADO DE TEXTURAS
     texture_background = loadTexture('Resources/Background/fondo.png')
     texture_platform = loadTexture('Resources/Background/plataforma.png')
 
+
     texture_green_globin.append([loadTexture('Resources/GreenGlobin/green_globin.png')])
     green_gameobject = GameObject(0,400,(int)(174/3),(int)(122/3), texture_green_globin)
+
 
     texture_spiderman.append([loadTexture('Resources/Spiderman/spidermanidle.png')])
     texture_spiderman.append([loadTexture('Resources/Spiderman/spidermanrun1.png'),loadTexture('Resources/Spiderman/spidermanrun2.png'),loadTexture('Resources/Spiderman/spidermanrun3.png'),loadTexture('Resources/Spiderman/spidermanrun4.png'),loadTexture('Resources/Spiderman/spidermanrun5.png'),loadTexture('Resources/Spiderman/spidermanrun6.png'),loadTexture('Resources/Spiderman/spidermanrun7.png'),loadTexture('Resources/Spiderman/spidermanrun8.png')])
@@ -463,7 +466,7 @@ def main():
     timer_sound_green_globin(0)
 
 
-
+    #SONIDO PRINCIPAL
     thread_sound = Thread(target=play_song)
     thread_sound.start()
     
