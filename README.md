@@ -2,6 +2,9 @@
 ## INSTITUTO TECNOLOGICO DE CHIHUAHUA II
 ## Graficación 🖥
 
+### Equipo
+**LUKAGE**
+
 ### Docente 🧑‍🏫
 **Carlos Humberto Rubio Rascón**
 
